@@ -5,7 +5,7 @@ const Gallery =  ()=> {
     let [collections, setCollections] = useState({});
 
     const fetchColletions = async() => {
-        const resp = await fetch('https://api.artic.edu/api/v1/artworks?fields=id,title,artist_display,date_display,main_reference_number,thumbnail&limit=25');
+        const resp = await fetch('https://api.artic.edu/api/v1/artworks?fields=id,title,image_id,thumbnail&limit=25');
         if (!resp.ok) {
             throw new Error("Error");
         }
@@ -27,9 +27,9 @@ const Gallery =  ()=> {
         return (
             <>
                 {collections.data
-                    .filter(collection => collection?.id && collection?.title)
-                    .map((collection, index) => (
-                        <Collection key={index} title={collection.title} img={collection.thumbnail} />
+                    .filter(collection => collection?.id && collection?.title && collection?.image_id)
+                    .map((collection, index, id) => (
+                        <Collection key={index + id} id={collection?.id} title={collection?.title} imgAlt={collection?.thumbnail?.alt_text} img={`${collections?.config?.iiif_url}/${collection?.image_id}/full/200,/0/default.jpg`} />
                     ))
                 }
             </>
@@ -42,8 +42,9 @@ const Gallery =  ()=> {
 
    return (
     <div>
-        <h3>Gallery</h3>
-        {collections ? collectionsGallery(collections) : null}
+        <h2>Art Institute of Chicago</h2>
+        <h3>Art Gallery</h3>
+        {collections ? <div className="flex">{collectionsGallery(collections)}</div> : null}
     </div>
 );
 

@@ -6,7 +6,6 @@ import CollectionDetail from './collections/CollectionDetail.jsx';
 function App() {
   return (
     <div className="App">
-            welcome 
       <Router>
             <Routes>
                 <Route path="/" element={ <Gallery />} />

@@ -2,15 +2,15 @@ import React from "react";
 import {useNavigate } from 'react-router-dom';
 
 const Collection = (props) => {
-    const { img, title } = props;
+    const { img, title, id } = props;
     const navigate = useNavigate();
     const handleImageClick = () => {
-        navigate(`/collection/${title}`); 
+        navigate(`/collection/${id}`); 
     };
 
     return (
-        <div>
-            { img ? <img src={img?.lqip} width="50%" height="50%" alt="art"  onClick={handleImageClick}  /> : null }
+        <div className="card"  onClick={handleImageClick}>
+            { img ? <img src={img} width="150px" height="150px" alt={props?.imgAlt} /> : null }
             { title ? <p>{title}</p> : null }
         </div>
     )
