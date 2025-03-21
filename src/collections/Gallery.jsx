@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Collection from "./Collection";
+import apiService from "./service";
 
 const Gallery =  ()=> {
     let [collections, setCollections] = useState({});
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState("");
 
     const fetchColletions = async() => {
-        const resp = await fetch('https://api.artic.edu/api/v1/artworks?fields=id,title,image_id,thumbnail&limit=25');
-        if (!resp.ok) {
-            throw new Error("Error");
-        }
-        const data = await resp.json();
-        setCollections(data);
+        try {
+            const resp = await apiService.fetchColletions();
+            setCollections(resp);
+          } catch (e) {
+            setError(e);
+          } finally {
+            setLoading(false);
+          }
+        
     }
 
     useEffect(() => {
         fetchColletions();
     }, []);
+
+    
 
     const collectionsGallery = (collections) => {
         console.log(collections);
@@ -23,6 +31,7 @@ const Gallery =  ()=> {
         if (!collections?.data || !Array.isArray(collections?.data)) {
             return null;
         }
+        
     
         return (
             <>
@@ -39,6 +48,9 @@ const Gallery =  ()=> {
     useEffect(() => {
         collectionsGallery(collections);
     }, [collections]);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
 
    return (
     <div>

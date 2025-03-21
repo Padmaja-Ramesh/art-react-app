@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import apiService from "./service";
 
 const CollectionDetail = () => {
     const [artworks, setArtworks] = useState({});
@@ -11,11 +12,8 @@ const CollectionDetail = () => {
     useEffect(() => {
         const fetchCollectionDetails = async () => {
             try {
-                setLoading(true);
-                const detailResponse = await fetch(`https://api.artic.edu/api/v1/artworks/${title}`);
-                if (!detailResponse.ok) throw new Error("Failed to fetch collection details");
-    
-                const resp = await detailResponse.json();
+                setLoading(true);    
+                const resp = await apiService.fetchCollectionDetails(title);
                 setArtworks(resp);
     
             } catch (err) {
